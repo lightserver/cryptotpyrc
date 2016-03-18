@@ -1,13 +1,14 @@
 package pl.setblack.lsa.cryptotpyrc.rsa
 
+
 import pl.setblack.lsa.cryptotpyrc.{PublicKey, PrivateKey, KeyPair}
 
-class RSAPrivateKey extends PrivateKey {
-  override def export: String = ???
+trait RSAPrivateKey extends PrivateKey {
+
 }
 
-class RSAPublicKey extends PublicKey {
-  override def export: String = ???
+trait RSAPublicKey  extends PublicKey {
+
 }
 
 case class RSAKeyPair(publ : RSAPublicKey, priv : RSAPrivateKey)  extends KeyPair[RSAPublicKey, RSAPrivateKey]  {
