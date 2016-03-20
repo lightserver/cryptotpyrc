@@ -21,8 +21,11 @@ object Runner {
     slave.init()
     scalajsCom.receive("newRunner:")
     val cmd = makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.RSACryptoAlgTest")
+    //val cmd = makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.ExampleSuite")
     println(cmd)
     scalajsCom.receive("execute:"+cmd)
+
+    scalajsCom.receive("stopSlave:")
   }
 
   def makeTask( name : String ) = {

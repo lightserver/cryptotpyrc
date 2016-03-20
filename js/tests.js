@@ -1,6 +1,6 @@
 function stackTraceToString(stackTrace) {
-    return stackTrace.map(function(s){
-        return 'at '+ s.className + '.' + s.methodName + '('+ s.fileName +':' + s.lineNumber+')';
+    return stackTrace.map(function (s) {
+        return 'at ' + s.className + '.' + s.methodName + '(' + s.fileName + ':' + s.lineNumber + ')';
     }).join('\n');
 }
 
@@ -8,7 +8,7 @@ function ScalaJSReporter(tc) {
 
     var testCount = 0;
 
-    this.testFinished = function(event) {
+    this.testFinished = function (event) {
         var result = {
             description: event.selector.testName,
             id: event.fullyQualifiedName + '.' + event.selector.testName,
@@ -21,29 +21,35 @@ function ScalaJSReporter(tc) {
         tc.result(result);
     };
 
-    this.testStarted = function() {
+    this.testStarted = function () {
 
     };
-    this.suiteCompleted = function() {
+    this.suiteCompleted = function () {
 
     };
-    this.suiteStarting = function() {
+    this.suiteStarting = function () {
 
     };
-    this.onMessage = function(msg) {
+    this.onMessage = function (msg) {
         var split = msg.indexOf(':');
         var cmd = msg.substring(0, split);
         if (cmd === 'event') {
-            var event = JSON.parse(msg.substr(split+1));
+            var event = JSON.parse(msg.substr(split + 1));
             this.testFinished(event);
         } else if (cmd === 'msg') {
-            var message = msg.substr(split+1);
-            if (message === 'org.scalatest.events.TestStarting') { this.testStarted(); }
-            else if(message === 'org.scalatest.events.SuiteCompleted') { this.suiteCompleted(); }
-            else if(message === 'org.scalatest.events.SuiteStarting') { this.suiteStarting(); }
+            var message = msg.substr(split + 1);
+            if (message === 'org.scalatest.events.TestStarting') {
+                this.testStarted();
+            }
+            else if (message === 'org.scalatest.events.SuiteCompleted') {
+                this.suiteCompleted();
+            }
+            else if (message === 'org.scalatest.events.SuiteStarting') {
+                this.suiteStarting();
+            }
         } else if (cmd === 'fail') {
-            this.testFailed(JSON.parse(msg.substr(split+1)));
-        } else if (cmd.substring(0,2) === 'ok') {
+            this.testFailed(JSON.parse(msg.substr(split + 1)));
+        } else if (cmd.substring(0, 2) === 'ok') {
         } else {
             console.log('UNKNOWN', msg);
         }
@@ -51,34 +57,41 @@ function ScalaJSReporter(tc) {
 }
 
 var pseudoKarma = {
-    result : function ( msg) {
-        console.log("result:"  + JSON.stringify(msg));
+    result: function (msg) {
+        console.log(msg.suite);
+        if (msg.success) {
+            console.log("success");
+        } else {
+            console.log("fail:" + msg.description);
+            console.log(msg.log);
+        }
+
     }
 };
 
-var stupidCallback =  function(msg) {
-        console.log(msg);
+var stupidCallback = function (msg) {
+    console.log(msg);
 };
 
 window.scalajsCom = {
-    reporter: function(tc) {
+    reporter: function (tc) {
         console.log("reported...");
         testReporter = new ScalaJSReporter(tc);
     },
-    init: function(recvCB) {
+    init: function (recvCB) {
         console.log("init...");
         callback = recvCB;
 
     },
-    receive: function(msg) {
+    receive: function (msg) {
         console.log("receive...");
         callback(msg);
     },
-    send: function(msg) {
+    send: function (msg) {
         console.log("send...");
         testReporter.onMessage(msg);
     },
-    close: function() {
+    close: function () {
     }
 };
 //scalajsCom.init(stupidCallback);
