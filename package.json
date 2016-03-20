@@ -1,0 +1,8 @@
+{
+  "name": "cryptoptyrc",
+  "devDependencies": {
+    "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-scalajs-scalatest": "git+https://github.com/chilang/karma-scalajs-scalatest.git"
+  }
+}

@@ -4,7 +4,7 @@ package pl.setblack.lsa.cryptotpyrc.rsa.js
 import scala.concurrent.{ExecutionContext, Future}
 import scala.scalajs.js
 import scala.scalajs.js.JSON
-import scala.util.Try
+import scala.util.{Success, Try}
 
 import org.scalajs.dom.crypto._
 import pl.setblack.lsa.cryptotpyrc.CryptoAlg
@@ -18,23 +18,34 @@ class RSACryptoAlg extends CryptoAlg[RSAKeyPair] {
     1024, new BigInteger(js.Array(0x01, 0x00, 0x01)), HashAlgorithm.`SHA-256`)
 
   override def generateKeys(): Future[Try[RSAKeyPair]] = {
-    val future: Future[Try[CryptoKeyPair]] = GlobalCrypto.crypto.subtle.generateKey(
+    val future: Future[CryptoKeyPair] = GlobalCrypto.crypto.subtle.generateKey(
       algorithm = myRsa,
       extractable = true,
       keyUsages = js.Array(KeyUsage.sign, KeyUsage.verify)
     ).toFuture
-      .map(_.asInstanceOf[Try[CryptoKeyPair]])
+      .map {
+        case x => {
+          println(x)
+          x.asInstanceOf[CryptoKeyPair]
+        }
+      }
 
-    future.map(tryKeyGen => tryKeyGen.map(
-      x => RSAKeyPair(
-        RSAPublicKeyJS(x.publicKey),
-        RSAPrivateKeyJS(x.privateKey))))
+    future.map {
+      case y => {
+        println(y)
+        val x = y.asInstanceOf[CryptoKeyPair]
+
+         Success(RSAKeyPair(
+            RSAPublicKeyJS(x.publicKey),
+            RSAPrivateKeyJS(x.privateKey)))
+      }
+    }
   }
 
 }
 
 
-case class RSAPublicKeyJS( native : CryptoKey) extends RSAPublicKey {
+case class RSAPublicKeyJS(native: CryptoKey) extends RSAPublicKey {
 
 
   override def export: Future[String] = {
@@ -44,7 +55,7 @@ case class RSAPublicKeyJS( native : CryptoKey) extends RSAPublicKey {
   }
 }
 
-case class RSAPrivateKeyJS( native : CryptoKey) extends RSAPrivateKey {
+case class RSAPrivateKeyJS(native: CryptoKey) extends RSAPrivateKey {
   override def export: Future[String] = {
     GlobalCrypto.crypto.subtle.exportKey(KeyFormat.pkcs8, native).toFuture.map(
       exported => JSON.stringify(exported)
