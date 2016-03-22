@@ -85,18 +85,10 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
   }
 }
 
-case class JwkKey(
-                   alg :String,
-                   e :String,
-                   ext :String,
-                   key_ops : Seq[String],
-                   kty : String,
-                   n : String)
+
 
 
 case class RSAPublicKeyJS(native: CryptoKey) extends RSAPublicKey {
-
-
   override def export: Future[String] = {
     GlobalCrypto.crypto.subtle.exportKey(KeyFormat.jwk, native).toFuture.map(
       exported => JSON.stringify(exported)

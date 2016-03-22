@@ -6,16 +6,15 @@ import pl.setblack.lsa.cryptotpyrc.rsa.RSAPrivateKey
 
 import scala.concurrent.Future
 
-class UniBaseTest extends AsyncFunSpec with Matchers {
+class UniBaseSpec extends AsyncFunSpec with Matchers {
 
   def createCrypto(): Crypto = ???
 
   describe("rsa") {
     val rsa = createCrypto.rsa()
     val importedPub: Future[RSAPublicKey] = rsa.importPublic(SampleRSAData.publicKey)
-    describe("imported public key") {
-
-    /*  it("should not be null") {
+    describe("imported key") {
+      it("public should not be null") {
         importedPub.map(key => {
           key should not be (null)
         })
@@ -33,11 +32,11 @@ class UniBaseTest extends AsyncFunSpec with Matchers {
         }).map( result => {
           result should be (false)
         })
-      }*/
+      }
       val importedPriv: Future[RSAPrivateKey] = importedPub.flatMap(
         whatever =>  rsa.importPrivate(SampleRSAData.privateKey)
       )
-      it("should not be null") {
+      it("should create same signature") {
         importedPriv.flatMap(key => {
           rsa.sign(SampleRSAData.message, key)
         }).map( signature => {
@@ -45,7 +44,7 @@ class UniBaseTest extends AsyncFunSpec with Matchers {
         })
       }
 
-      it("should create same signature") {
+      it("private should not be null") {
         importedPriv.map(key => {
           key should not be (null)
         })
