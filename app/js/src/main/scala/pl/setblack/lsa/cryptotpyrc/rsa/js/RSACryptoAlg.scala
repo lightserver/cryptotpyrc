@@ -1,11 +1,10 @@
 package pl.setblack.lsa.cryptotpyrc.rsa.js
 
 
-import cryptotpyrc.Base64ArrayBuffer
-
 import scala.concurrent.{ExecutionContext, Future}
 import scala.scalajs.js
 import scala.scalajs.js.JSON
+import scala.scalajs.js.annotation.JSName
 import scala.scalajs.js.typedarray.ArrayBuffer
 import scala.util.{Success, Try}
 
@@ -14,6 +13,16 @@ import pl.setblack.lsa.cryptotpyrc.{KeyPair, CryptoAlg}
 import pl.setblack.lsa.cryptotpyrc.rsa.{RSAPrivateKey, RSAPublicKey}
 
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
+
+@JSName( "base64buffer")
+@js.native
+object Base64ArrayBuffer extends js.Object {
+
+  def encode( byteBuffer : ArrayBuffer) : String =  js.native
+
+  def decode( byteBuffer : String ) : ArrayBuffer = js.native
+
+}
 
 class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
   type RSAKeyPair = KeyPair[RSAPublicKey, RSAPrivateKey]

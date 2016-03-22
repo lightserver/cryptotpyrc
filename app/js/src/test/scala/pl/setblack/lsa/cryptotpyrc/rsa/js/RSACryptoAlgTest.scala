@@ -1,6 +1,5 @@
 package pl.setblack.lsa.cryptotpyrc.rsa.js
 
-import cryptotpyrc.Base64ArrayBuffer
 import org.scalatest.{AsyncFunSpec, Matchers, FunSpec, FunSuite}
 import pl.setblack.lsa.cryptotpyrc.{UniCrypto, JSCrypto}
 

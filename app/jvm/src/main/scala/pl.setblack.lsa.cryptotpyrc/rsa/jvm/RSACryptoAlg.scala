@@ -11,10 +11,9 @@ import pl.setblack.lsa.cryptotpyrc.rsa.{JwkKey, RSAPrivateKey, RSAPublicKey}
 
 import scala.concurrent.Future
 import scala.util.{Success, Try}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
-
-  import scala.concurrent.ExecutionContext.Implicits.global
 
   val keyGen = KeyPairGenerator.getInstance("RSA")
   keyGen.initialize(1024)
@@ -23,7 +22,7 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
     val keyPair = keyGen.generateKeyPair()
     Future {
       Success(KeyPair(
-        pub = RSAPublicKeyJVM(keyPair.getPublic),
+        pub = RSAPublicKeyJVM(keyPair.getPublic.asInstanceOf[java.security.interfaces.RSAPublicKey]),
         priv = RSAPrivateKeyJVM(keyPair.getPrivate))
       )
     }
@@ -49,7 +48,11 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
       val jsonKey = upickle.default.read[JwkKey](jwkKey)
       val modulus = new BigInteger(1, Base64.getUrlDecoder.decode(jsonKey.n))
       val exponent = new BigInteger(1, Base64.getUrlDecoder.decode(jsonKey.e))
-      RSAPublicKeyJVM(KeyFactory.getInstance("RSA").generatePublic(new RSAPublicKeySpec(modulus, exponent)))
+      RSAPublicKeyJVM(
+          KeyFactory.getInstance("RSA")
+            .generatePublic(new RSAPublicKeySpec(modulus, exponent))
+                .asInstanceOf[java.security.interfaces.RSAPublicKey]
+      )
     }
   }
 
@@ -68,10 +71,28 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
 }
 
 
-case class RSAPublicKeyJVM(val publ: PublicKey) extends RSAPublicKey {
-  override def export: Future[String] = ???
+case class RSAPublicKeyJVM(val publ: java.security.interfaces.RSAPublicKey) extends RSAPublicKey {
+  override def export: Future[String] = {
+      Future {
+         val modulus = publ.getModulus
+         val exponent = publ.getPublicExponent
+        val jwkKey = JwkKey(
+            alg = "RS256",
+            ext = true,
+            key_ops =  Seq("verify"),
+            kty =  "RSA",
+            n = Base64.getUrlEncoder.encodeToString(modulus.toByteArray),
+            e = Base64.getUrlEncoder.encodeToString(exponent.toByteArray)
+        )
+        upickle.default.write(jwkKey)
+      }
+  }
 }
 
 case class RSAPrivateKeyJVM(val priv: PrivateKey) extends RSAPrivateKey {
-  override def export: Future[String] = ???
+  override def export: Future[String] = {
+    Future {
+      Base64.getEncoder.encodeToString(priv.getEncoded)
+    }
+  }
 }

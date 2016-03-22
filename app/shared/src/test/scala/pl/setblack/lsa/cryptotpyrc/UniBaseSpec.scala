@@ -1,8 +1,7 @@
 package pl.setblack.lsa.cryptotpyrc
 
 import org.scalatest.{Matchers, AsyncFunSpec}
-import pl.setblack.lsa.cryptotpyrc.rsa.RSAPublicKey
-import pl.setblack.lsa.cryptotpyrc.rsa.RSAPrivateKey
+import pl.setblack.lsa.cryptotpyrc.rsa.{JwkKey, RSAPublicKey, RSAPrivateKey}
 
 import scala.concurrent.Future
 
@@ -50,7 +49,25 @@ abstract class UniBaseSpec extends AsyncFunSpec with Matchers {
         })
       }
     }
-
+    describe("generated key") {
+      val generatedKeyPair = rsa.generateKeys()
+      val exportedPublic = generatedKeyPair.flatMap( keys => {
+        keys.get.pub.export
+      })
+      val exportedPriv = generatedKeyPair.flatMap( keys => {
+        keys.get.priv.export
+      })
+      it( "public should be JwkFormat") {
+        exportedPublic.map(keyExp => {
+          upickle.default.read[JwkKey](keyExp).n should not be (empty)
+        })
+      }
+      it( "private should be PKCS") {
+        exportedPriv.map(keyExp => {
+          keyExp should not be (empty)
+        })
+      }
+    }
 
   }
 
