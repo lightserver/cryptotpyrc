@@ -1,4 +1,4 @@
-package jvm
+package pl.setblack.lsa.cryptotpyrc.rsa.jvm
 
 import org.scalatest.FunSpec
 

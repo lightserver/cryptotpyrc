@@ -47,7 +47,7 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
     }
   }
 
-  override def sign(message: String, key: RSAPrivateKey): Future[String] = {
+  override def sign( key: RSAPrivateKey, message: String): Future[String] = {
 
     import scala.scalajs.js.typedarray.charArray2Uint16Array
     val data = charArray2Uint16Array(message.toCharArray)

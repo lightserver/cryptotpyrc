@@ -45,7 +45,7 @@ class RSACryptoAlgTest extends AsyncFunSpec with Matchers {
 
         val signed: Future[String] = generatedKeyPair.flatMap(keyPairGeneration => {
           val privateKey = keyPairGeneration.get.priv
-          val result = rsa.sign(message, privateKey)
+          val result = rsa.sign(privateKey, message )
           println("res:" + result)
           result
         })

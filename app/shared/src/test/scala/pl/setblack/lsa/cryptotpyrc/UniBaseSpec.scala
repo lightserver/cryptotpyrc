@@ -38,7 +38,7 @@ abstract class UniBaseSpec extends AsyncFunSpec with Matchers {
       )
       it("should create same signature") {
         importedPriv.flatMap(key => {
-          rsa.sign(SampleRSAData.message, key)
+          rsa.sign(key, SampleRSAData.message )
         }).map( signature => {
           signature should equal( SampleRSAData.signature)
         })

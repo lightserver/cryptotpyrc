@@ -7,7 +7,7 @@ import scala.util.Try
 trait CryptoAlg[PUBLIC, PRIVATE] {
 
   def generateKeys(): Future[Try[KeyPair[PUBLIC,PRIVATE]]]
-  def sign( message: String, key : PRIVATE) : Future[String]
+  def sign(  key : PRIVATE, message: String) : Future[String]
   def verify( key: PUBLIC, signature : String, message: String ) :Future[Boolean]
 
   def importPublic( jwkKey : String) : Future[PUBLIC]

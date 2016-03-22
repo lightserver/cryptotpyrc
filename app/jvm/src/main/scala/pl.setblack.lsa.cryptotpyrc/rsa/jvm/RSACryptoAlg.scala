@@ -53,7 +53,7 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
     }
   }
 
-  override def sign(message: String, key: RSAPrivateKey): Future[String] = {
+  override def sign(key: RSAPrivateKey, message: String): Future[String] = {
     Future {
       val signatureChecker = Signature.getInstance("SHA256withRSA")
       signatureChecker.initSign(key.asInstanceOf[RSAPrivateKeyJVM].priv)
