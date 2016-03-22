@@ -13,11 +13,10 @@ val generatedKeyPair = rsa.generateKeys()
 ...
 generatedKeyPair.flatMap(
            keyPairGeneration => {
-             val publicKey = keyPairGeneration.get.pub
+             val publicKeyJwk:Future[String] = keyPairGeneration.get.pub.export
 
-             val privKey = keyPairGeneration.get.priv.export.foreach(pk => println("PRIV:" + pk))
-
-            publicKey.export
+             val privKeyPKCS8:Future[String] = keyPairGeneration.get.priv.export
+             ...
            }
        )
 ...
@@ -25,6 +24,9 @@ val signature:Future[String] = rsa.sign(privKey, "mymessage" )
 ..
 val verified:Future[Boolean] = rsa.verify(publKey, singature, "mymessage")
 ```
-
+## Design
+1. Use Strings in API -  make it easy
+2. Use JVM Native and Browser native libraries (does not work on NodeJS)
+3. Use Future(s) in API ( because of JavaScript)
 
 
