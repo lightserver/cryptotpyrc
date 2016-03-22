@@ -56,16 +56,26 @@ function ScalaJSReporter(tc) {
     };
 }
 
+var template = "<table>{{#tests}}<tr><td>{{suite}}</td><td>{{desc}}</td><td>{{status}}</td></tr>{{/tests}}</table>";
+
 var pseudoKarma = {
+    content : {
+        tests : []
+    },
+
     result: function (msg) {
         console.log(msg.suite);
         if (msg.success) {
             console.log("success:" + msg.description);
+            pseudoKarma.content.tests.push( { "desc" : msg.description, "status": "success", "suite": msg.suite} );
         } else {
             console.log("fail:" + msg.description);
             console.log(msg.log);
-        }
 
+            pseudoKarma.content.tests.push( { "desc" : msg.description, "status": "faile", "suite": msg.suite} );
+        }
+        var rendered = Mustache.render(template, pseudoKarma.content);
+        jQuery("#results").html(rendered);
     }
 };
 
@@ -115,3 +125,4 @@ var sampleCmd = {
 };
 
 scalajsCom.reporter(pseudoKarma);
+
