@@ -20,6 +20,7 @@ val app = crossProject.settings(
     baseDirectory.value  / "shared" / "main" / "scala",
 
   libraryDependencies ++= Seq(
+    "com.lihaoyi" %%% "upickle" % "0.3.8",
     "org.scalatest" %%% "scalatest" % "3.0.0-M15" % "test"
   ),
   testFrameworks += new TestFramework("utest.runner.Framework")

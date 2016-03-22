@@ -10,9 +10,6 @@ trait PrivateKey extends CryptoKey
 
 trait PublicKey extends CryptoKey
 
-trait KeyPair[PUBLIC, PRIVATE] {
-  type PUB = PUBLIC
-  type PRIV = PRIVATE
-  def getPrivate :  PRIVATE
-  def getPublic :  PUBLIC
+case class KeyPair[PUBLIC, PRIVATE](pub : PUBLIC, priv: PRIVATE) {
+
 }

@@ -9,7 +9,6 @@ import org.scalatest._
 @js.native
 object scalajsCom extends js.Object{
   def receive(command : String) : Unit  = js.native
-
 }
 
 @JSExport
@@ -20,19 +19,18 @@ object Runner {
     val slave = new Slave("org.scalatest.tools.Framework", js.Array() , js.Array())
     slave.init()
     scalajsCom.receive("newRunner:")
-    val cmd = makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.RSACryptoAlgTest")
-    //val cmd = makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.ExampleSuite")
-    println(cmd)
-    scalajsCom.receive("execute:"+cmd)
 
-    scalajsCom.receive("stopSlave:")
+    scalajsCom.receive("execute:"+makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.RSACryptoAlgTest"))
+    scalajsCom.receive("execute:"+makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.UniTest"))
+
+    //scalajsCom.receive("stopSlave:")
   }
 
   def makeTask( name : String ) = {
     s"""{"fullyQualifiedName": "${name}",
     "fingerprint": {
       "fpType": "SubclassFingerprint",
-      "superclassName": "org.scalatest.Suite",
+      "superclassName": "org.scalatest.AsyncFunSuite",
       "isModule": false,
       "requireNoArgConstructor": true
     },
@@ -50,6 +48,4 @@ object Runner {
 
 }
 
-case class RunTask(
 
-                  )

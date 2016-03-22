@@ -11,8 +11,4 @@ trait RSAPublicKey  extends PublicKey {
 
 }
 
-case class RSAKeyPair(publ : RSAPublicKey, priv : RSAPrivateKey)  extends KeyPair[RSAPublicKey, RSAPrivateKey]  {
-  override def getPrivate: RSAPrivateKey = priv
-
-  override def getPublic: RSAPublicKey = publ
-}
+//type RSAKeyPair  = KeyPair[RSAPublicKey, RSAPrivateKey]

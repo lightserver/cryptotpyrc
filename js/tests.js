@@ -60,7 +60,7 @@ var pseudoKarma = {
     result: function (msg) {
         console.log(msg.suite);
         if (msg.success) {
-            console.log("success");
+            console.log("success:" + msg.description);
         } else {
             console.log("fail:" + msg.description);
             console.log(msg.log);

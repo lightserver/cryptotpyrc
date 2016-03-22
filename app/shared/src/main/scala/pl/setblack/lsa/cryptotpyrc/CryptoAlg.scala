@@ -4,12 +4,14 @@ package pl.setblack.lsa.cryptotpyrc
 import scala.concurrent.Future
 import scala.util.Try
 
-trait CryptoAlg[KP <: KeyPair[_, _]] {
-  type PUBLIC = KP#PUB
-  type PRIVATE = KP#PRIV
+trait CryptoAlg[PUBLIC, PRIVATE] {
 
-  def generateKeys(): Future[Try[KP]]
+  def generateKeys(): Future[Try[KeyPair[PUBLIC,PRIVATE]]]
+  def sign( message: String, key : PRIVATE) : Future[String]
+  def verify( key: PUBLIC, signature : String, message: String ) :Future[Boolean]
 
+  def importPublic( jwkKey : String) : Future[PUBLIC]
+  def importPrivate( pkcs : String) : Future[PRIVATE]
 }
 
 trait CryptoSigner {
@@ -19,7 +21,5 @@ trait CryptoSigner {
 trait CryptoVerifier {
   def verify(message: String, signature: String): Future[Boolean]
 }
-
-
 
 
