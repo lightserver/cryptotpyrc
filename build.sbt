@@ -3,8 +3,6 @@ import sbt._
 
 import sbt.Keys._
 
-
-
 scalaJSStage in Global := FastOptStage
 
 scalaJSUseRhino in Global  :=false
@@ -22,11 +20,10 @@ val app = crossProject.settings(
   libraryDependencies ++= Seq(
     "com.lihaoyi" %%% "upickle" % "0.3.8",
     "org.scalatest" %%% "scalatest" % "3.0.0-M15" % "test"
-  ),
-  testFrameworks += new TestFramework("utest.runner.Framework")
+  )
+
 ).jsSettings(
     //jsEnv := PhantomJSEnv().value,
-
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.0"
     ),

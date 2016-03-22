@@ -6,7 +6,7 @@ import pl.setblack.lsa.cryptotpyrc.rsa.RSAPrivateKey
 
 import scala.concurrent.Future
 
-class UniBaseSpec extends AsyncFunSpec with Matchers {
+abstract class UniBaseSpec extends AsyncFunSpec with Matchers {
 
   def createCrypto(): Crypto = ???
 
