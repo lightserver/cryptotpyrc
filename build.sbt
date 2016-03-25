@@ -1,6 +1,3 @@
-import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
-import sbt._
-
 import sbt.Keys._
 
 scalaJSStage in Global := FastOptStage
@@ -9,11 +6,17 @@ scalaJSUseRhino in Global  :=false
 
 skip in packageJSDependencies := false
 
+scalaVersion := "2.11.8"
+organization := "pl.setblack"
+name := "cryptotpyrc"
+version := "0.2-SNAPSHOT"
 
 val app = crossProject.settings(
-  scalaVersion := "2.11.8",
+   scalaVersion := "2.11.8",
+  organization := "pl.setblack",
   name := "cryptotpyrc",
-  version := "0.1",
+  version := "0.1-SNAPSHOT",
+
   unmanagedSourceDirectories in Compile +=
     baseDirectory.value  / "shared" / "main" / "scala",
 
@@ -23,7 +26,6 @@ val app = crossProject.settings(
   )
 
 ).jsSettings(
-    //jsEnv := PhantomJSEnv().value,
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.9.0"
     ),

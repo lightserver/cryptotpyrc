@@ -32,7 +32,7 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
   private val keyUsages =   js.Array(KeyUsage.sign, KeyUsage.verify)
 
 
-  override def generateKeys(): Future[Try[RSAKeyPair]] = {
+  override def generateKeys(): Future[RSAKeyPair] = {
     val future: Future[CryptoKeyPair] = GlobalCrypto.crypto.subtle.generateKey(
       algorithm = myRsa,
       extractable = true,
@@ -40,18 +40,17 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
     ).toFuture
       .map {
         case x => {
-          println(x)
           x.asInstanceOf[CryptoKeyPair]
         }
       }
 
     future.map {
       case y => {
-        println(y)
+
         val x = y.asInstanceOf[CryptoKeyPair]
-        Success(new RSAKeyPair(
+         new RSAKeyPair(
           RSAPublicKeyJS(x.publicKey),
-          RSAPrivateKeyJS(x.privateKey)))
+          RSAPrivateKeyJS(x.privateKey))
       }
     }
   }

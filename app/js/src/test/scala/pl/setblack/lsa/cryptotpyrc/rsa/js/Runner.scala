@@ -20,7 +20,7 @@ object Runner {
     slave.init()
     scalajsCom.receive("newRunner:")
 
-    scalajsCom.receive("execute:"+makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.RSACryptoAlgTest"))
+    //scalajsCom.receive("execute:"+makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.RSACryptoAlgTest"))
     scalajsCom.receive("execute:"+makeRunCmd("pl.setblack.lsa.cryptotpyrc.rsa.js.UniTest"))
 
     //scalajsCom.receive("stopSlave:")

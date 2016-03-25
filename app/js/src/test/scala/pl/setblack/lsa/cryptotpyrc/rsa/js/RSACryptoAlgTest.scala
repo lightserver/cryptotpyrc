@@ -25,9 +25,9 @@ class RSACryptoAlgTest extends AsyncFunSpec with Matchers {
       describe("and especially publick key") {
         val exportedString: Future[String] = generatedKeyPair.flatMap(
           keyPairGeneration => {
-            val publicKey = keyPairGeneration.get.pub
+            val publicKey = keyPairGeneration.pub
 
-            val privKey = keyPairGeneration.get.priv.export.foreach(pk => println("PRIV:" + pk))
+            val privKey = keyPairGeneration.priv.export.foreach(pk => println("PRIV:" + pk))
 
            publicKey.export
           }
@@ -43,7 +43,7 @@ class RSACryptoAlgTest extends AsyncFunSpec with Matchers {
         val message = "I wanted to sign this"
 
         val signed: Future[String] = generatedKeyPair.flatMap(keyPairGeneration => {
-          val privateKey = keyPairGeneration.get.priv
+          val privateKey = keyPairGeneration.priv
           val result = rsa.sign(privateKey, message )
           println("res:" + result)
           result
@@ -51,7 +51,7 @@ class RSACryptoAlgTest extends AsyncFunSpec with Matchers {
 
         describe(" verify ") {
           val verified: Future[Boolean] = generatedKeyPair.flatMap(pair => {
-            val pubKey = pair.get.pub
+            val pubKey = pair.pub
             signed.flatMap(signature => {
               println("SIGNATURE:" + signature)
               rsa.verify(pubKey, signature, message)
@@ -61,7 +61,7 @@ class RSACryptoAlgTest extends AsyncFunSpec with Matchers {
             verified.map(v => v should be(true))
           }
           val verified2: Future[Boolean] = generatedKeyPair.flatMap(pair => {
-            val pubKey = pair.get.pub
+            val pubKey = pair.pub
             signed.flatMap(signature => {
               rsa.verify(pubKey, signature, "mis kolabor")
             })

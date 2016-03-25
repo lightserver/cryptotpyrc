@@ -18,12 +18,12 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
   val keyGen = KeyPairGenerator.getInstance("RSA")
   keyGen.initialize(1024)
 
-  override def generateKeys(): Future[Try[KeyPair[RSAPublicKey, RSAPrivateKey]]] = {
+  override def generateKeys(): Future[KeyPair[RSAPublicKey, RSAPrivateKey]] = {
     val keyPair = keyGen.generateKeyPair()
     Future {
-      Success(KeyPair(
+      KeyPair(
         pub = RSAPublicKeyJVM(keyPair.getPublic.asInstanceOf[java.security.interfaces.RSAPublicKey]),
-        priv = RSAPrivateKeyJVM(keyPair.getPrivate))
+        priv = RSAPrivateKeyJVM(keyPair.getPrivate)
       )
     }
   }

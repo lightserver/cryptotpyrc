@@ -52,10 +52,10 @@ abstract class UniBaseSpec extends AsyncFunSpec with Matchers {
     describe("generated key") {
       val generatedKeyPair = rsa.generateKeys()
       val exportedPublic = generatedKeyPair.flatMap( keys => {
-        keys.get.pub.export
+        keys.pub.export
       })
       val exportedPriv = generatedKeyPair.flatMap( keys => {
-        keys.get.priv.export
+        keys.priv.export
       })
       it( "public should be JwkFormat") {
         exportedPublic.map(keyExp => {
