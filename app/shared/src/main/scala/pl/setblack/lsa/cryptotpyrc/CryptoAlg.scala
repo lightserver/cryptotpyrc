@@ -12,6 +12,8 @@ trait CryptoAlg[PUBLIC, PRIVATE] {
 
   def importPublic( jwkKey : String) : Future[PUBLIC]
   def importPrivate( pkcs : String) : Future[PRIVATE]
+
+  def digest( message: String) : Future[String]
 }
 
 trait CryptoSigner {

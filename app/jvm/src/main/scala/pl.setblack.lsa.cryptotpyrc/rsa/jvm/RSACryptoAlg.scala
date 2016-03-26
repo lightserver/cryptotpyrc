@@ -49,9 +49,9 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
       val modulus = new BigInteger(1, Base64.getUrlDecoder.decode(jsonKey.n))
       val exponent = new BigInteger(1, Base64.getUrlDecoder.decode(jsonKey.e))
       RSAPublicKeyJVM(
-          KeyFactory.getInstance("RSA")
-            .generatePublic(new RSAPublicKeySpec(modulus, exponent))
-                .asInstanceOf[java.security.interfaces.RSAPublicKey]
+        KeyFactory.getInstance("RSA")
+          .generatePublic(new RSAPublicKeySpec(modulus, exponent))
+          .asInstanceOf[java.security.interfaces.RSAPublicKey]
       )
     }
   }
@@ -65,6 +65,13 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
     }
   }
 
+  override def digest(message: String): Future[String] = {
+    Future {
+      val digester = MessageDigest.getInstance("SHA-256")
+      new String(Base64.getEncoder.encode(digester.digest(makeBytesMsg(message))))
+    }
+  }
+
   private def makeBytesMsg(msg: String) = {
     msg.getBytes("UTF-16LE")
   }
@@ -73,19 +80,19 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
 
 case class RSAPublicKeyJVM(val publ: java.security.interfaces.RSAPublicKey) extends RSAPublicKey {
   override def export: Future[String] = {
-      Future {
-         val modulus = publ.getModulus
-         val exponent = publ.getPublicExponent
-        val jwkKey = JwkKey(
-            alg = "RS256",
-            ext = true,
-            key_ops =  Seq("verify"),
-            kty =  "RSA",
-            n = Base64.getUrlEncoder.encodeToString(modulus.toByteArray),
-            e = Base64.getUrlEncoder.encodeToString(exponent.toByteArray)
-        )
-        upickle.default.write(jwkKey)
-      }
+    Future {
+      val modulus = publ.getModulus
+      val exponent = publ.getPublicExponent
+      val jwkKey = JwkKey(
+        alg = "RS256",
+        ext = true,
+        key_ops = Seq("verify"),
+        kty = "RSA",
+        n = Base64.getUrlEncoder.encodeToString(modulus.toByteArray),
+        e = Base64.getUrlEncoder.encodeToString(exponent.toByteArray)
+      )
+      upickle.default.write(jwkKey)
+    }
   }
 }
 

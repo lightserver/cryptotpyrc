@@ -8,3 +8,5 @@ import scala.concurrent.Promise
 trait Crypto {
   def rsa() : CryptoAlg[RSAPublicKey, RSAPrivateKey]
 }
+
+

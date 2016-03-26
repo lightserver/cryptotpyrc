@@ -6,16 +6,32 @@ scalaJSUseRhino in Global  :=false
 
 skip in packageJSDependencies := false
 
+val myVersion = "0.3-SNAPSHOT"
+
 scalaVersion := "2.11.8"
 organization := "pl.setblack"
 name := "cryptotpyrc"
-version := "0.2-SNAPSHOT"
+version := myVersion
+
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
+
+publishMavenStyle := true
+
+publishArtifact in Test := false
+
+pomIncludeRepository := { _ => false }
 
 val app = crossProject.settings(
    scalaVersion := "2.11.8",
   organization := "pl.setblack",
   name := "cryptotpyrc",
-  version := "0.1-SNAPSHOT",
+  version := myVersion,
 
   unmanagedSourceDirectories in Compile +=
     baseDirectory.value  / "shared" / "main" / "scala",

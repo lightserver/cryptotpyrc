@@ -12,37 +12,45 @@ abstract class UniBaseSpec extends AsyncFunSpec with Matchers {
   describe("rsa") {
     val rsa = createCrypto.rsa()
     val importedPub: Future[RSAPublicKey] = rsa.importPublic(SampleRSAData.publicKey)
-    describe("imported key") {
+    describe("imported key a)") {
       it("public should not be null") {
         importedPub.map(key => {
           key should not be (null)
         })
       }
+    }
+    describe("imported key b) ") {
       it("should verify positive") {
         importedPub.flatMap(key => {
-          rsa.verify(key, SampleRSAData.signature, SampleRSAData.message )
-        }).map( result => {
-          result should be (true)
+          rsa.verify(key, SampleRSAData.signature, SampleRSAData.message)
+        }).map(result => {
+          result should be(true)
         })
       }
+    }
+    describe("imported key c)") {
       it("should verify negative") {
         importedPub.flatMap(key => {
           rsa.verify(key, SampleRSAData.signature, "alternate wrong message")
-        }).map( result => {
-          result should be (false)
+        }).map(result => {
+          result should be(false)
         })
       }
-      val importedPriv: Future[RSAPrivateKey] = importedPub.flatMap(
-        whatever =>  rsa.importPrivate(SampleRSAData.privateKey)
-      )
+    }
+    val importedPriv: Future[RSAPrivateKey] = importedPub.flatMap(
+      whatever =>  rsa.importPrivate(SampleRSAData.privateKey)
+    )
+    describe ("imported priv key a)") {
+
       it("should create same signature") {
         importedPriv.flatMap(key => {
-          rsa.sign(key, SampleRSAData.message )
-        }).map( signature => {
-          signature should equal( SampleRSAData.signature)
+          rsa.sign(key, SampleRSAData.message)
+        }).map(signature => {
+          signature should equal(SampleRSAData.signature)
         })
       }
-
+    }
+    describe ("imported priv key b)") {
       it("private should not be null") {
         importedPriv.map(key => {
           key should not be (null)
