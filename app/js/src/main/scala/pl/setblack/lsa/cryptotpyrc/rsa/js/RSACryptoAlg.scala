@@ -90,12 +90,8 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
     val data = charArray2Uint16Array(message.toCharArray)
     GlobalCrypto.crypto.subtle.digest(myRsa.hash, data.buffer).toFuture.map(
       digested => {
-        println(s"digested...${digested}")
         val y = digested.asInstanceOf[ArrayBuffer]
-        println(s"digested...y ${y}")
-        println(s"digested...coded ${base64coder}")
         val encoded:String = base64coder.encode(y)
-        println(s"digested...encoded ${encoded}")
         encoded
       }
     )

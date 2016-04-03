@@ -12,7 +12,6 @@ scalaVersion := "2.11.8"
 organization := "pl.setblack"
 name := "cryptotpyrc"
 version := myVersion
-
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
