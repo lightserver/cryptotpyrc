@@ -1,5 +1,5 @@
 [![Scala.js](https://www.scala-js.org/assets/badges/scalajs-0.6.8.svg)](https://www.scala-js.org)
-
+[![Build Status](https://travis-ci.org/lightserver/cryptotpyrc.svg?branch=master)](https://travis-ci.org/lightserver/cryptotpyrc)
 #Cryptotpyrc
 
 This ScalaJS cross compiled RSA / Crypto library.
