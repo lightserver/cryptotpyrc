@@ -88,7 +88,7 @@ case class RSAPublicKeyJVM(val publ: java.security.interfaces.RSAPublicKey) exte
         ext = true,
         key_ops = Seq("verify"),
         kty = "RSA",
-        n = Base64.getUrlEncoder.encodeToString(stripLeadingZeros(modulus.toByteArray)),
+        n = Base64.getUrlEncoder.withoutPadding().encodeToString(stripLeadingZeros(modulus.toByteArray)),
         e = Base64.getUrlEncoder.encodeToString(exponent.toByteArray)
       )
       upickle.default.write(jwkKey)

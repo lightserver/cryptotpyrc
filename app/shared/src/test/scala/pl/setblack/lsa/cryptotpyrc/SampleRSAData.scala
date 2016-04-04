@@ -1,5 +1,7 @@
 package pl.setblack.lsa.cryptotpyrc
 
+
+
 object SampleRSAData {
   val message = "I wanted to sign this"
   val publicKey = "{\"alg\":\"RS256\",\"e\":\"AQAB\",\"ext\":true,\"key_ops\":[\"verify\"],\"kty\":\"RSA\",\"n\":\"zAbOunTt8GzFlmsjw35kFTC8evZ0rs0LStW72C-PaE3T4LJrFJ5SNRnjzbKjzJqLZHZtvpuS7P2zLEYP0JIhyZs65o7jOOyeU9WNpW0MzGowUEk20H8D1kRv0dylNG5IlhdqUpXIYqajdWreucPalxMjz93RInYWU1XZgqYkN0E\"}"
