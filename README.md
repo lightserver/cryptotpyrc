@@ -5,11 +5,11 @@
 This ScalaJS cross compiled RSA / Crypto library.
 
 ## Supported
-1. RSA Key generation
+1. RSA Key generation / import / export
 2. RSA Signing and Verifying
 
 ## Usage
-Add this to you build.xbt
+Add this to your build.sbt
 ```"pl.setblack" %%% "cryptotpyrc" % "0.4"```
 
 ```
@@ -38,5 +38,6 @@ val verified:Future[Boolean] = rsa.verify(publKey, singature, "mymessage")
 
 ## Testing
 1. ```sbt test``` runs only JVM part of tests
-2. to test in browser run ```sbt appJS/test:fastOptJS``` and then open provided test.html. (There are still issues with scalatest async tests, though.)
+2. Rhine/ Node just does not work (SubtleCrypto...)
+3. To test in browser run ```sbt appJS/test:fastOptJS``` and then open provided test.html. (There are still issues with scalatest async tests, though.)
 
