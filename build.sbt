@@ -6,7 +6,7 @@ scalaJSUseRhino in Global  :=false
 
 skip in packageJSDependencies := false
 
-val myVersion = "0.3-SNAPSHOT"
+val myVersion = "0.4"
 
 scalaVersion := "2.11.8"
 organization := "pl.setblack"
