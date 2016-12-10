@@ -2,16 +2,15 @@ import sbt.Keys._
 
 scalaJSStage in Global := FastOptStage
 
-scalaJSUseRhino in Global := false
-
 skip in packageJSDependencies := false
 
-val myVersion = "0.4"
+val myVersion = "0.4.1"
 
-scalaVersion := "2.11.8"
-organization := "pl.setblack"
-name := "cryptotpyrc"
-version := myVersion
+scalaVersion in ThisBuild := "2.12.1"
+organization in ThisBuild := "pl.setblack"
+name in ThisBuild := "cryptotpyrc"
+version in ThisBuild := myVersion
+
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
@@ -27,29 +26,24 @@ publishArtifact in Test := false
 pomIncludeRepository := { _ => false }
 
 val app = crossProject.settings(
-  scalaVersion := "2.11.8",
-  organization := "pl.setblack",
-  name := "cryptotpyrc",
-  version := myVersion,
 
   unmanagedSourceDirectories in Compile +=
     baseDirectory.value / "shared" / "main" / "scala",
 
   libraryDependencies ++= Seq(
-    "com.lihaoyi" %%% "upickle" % "0.3.8",
-    "org.scalatest" %%% "scalatest" % "3.0.0-M15" % "test"
+    "com.lihaoyi" %%% "upickle" % "0.4.4",
+    "org.scalatest" %%% "scalatest" % "3.0.1" % "test"
   )
 ).jsSettings(
   libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.9.0"
+    "org.scala-js" %%% "scalajs-dom" % "0.9.1"
   ),
   jsDependencies ++= Seq(),
   skip in packageJSDependencies := false,
   persistLauncher in Compile := false
 ).jvmSettings(
   libraryDependencies ++= Seq(
-    "org.bouncycastle" % "bcprov-jdk16" % "1.46",
-    "org.scalaz" %% "scalaz-core" % "7.1.2"
+    "org.scalaz" %% "scalaz-core" % "7.2.8"
   )
 )
 
