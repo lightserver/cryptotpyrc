@@ -4,8 +4,8 @@ module.exports = function(config) {
         reporters: ['progress'],
         frameworks: ['scalajs-scalatest'],
         files: [
-            'app/js/target/scala-2.11/cryptotpyrc-test-jsdeps.js',
-            'app/js/target/scala-2.11/cryptotpyrc-test-fastopt.js'
+            'app/js/target/scala-2.12/cryptotpyrc-test-jsdeps.js',
+            'app/js/target/scala-2.12/cryptotpyrc-test-fastopt.js'
         ],
 
         browsers: process.env.TRAVIS ? ['Firefox'] : ['Chrome'],

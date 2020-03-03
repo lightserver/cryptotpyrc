@@ -19,7 +19,7 @@ class RSACryptoAlg extends CryptoAlg[RSAPublicKey, RSAPrivateKey] {
   type RSAKeyPair = KeyPair[RSAPublicKey, RSAPrivateKey]
 
   val myRsa = RsaHashedKeyAlgorithm.`RSASSA-PKCS1-v1_5`(
-    1024, new BigInteger(js.Array(0x01, 0x00, 0x01)), HashAlgorithm.`SHA-256`)
+    1024, new BigInteger(js.Array[Short](0x01, 0x00, 0x01)), HashAlgorithm.`SHA-256`)
   private val keyUsages =   js.Array(KeyUsage.sign, KeyUsage.verify)
 
   val base64coder:SBase64ArrayBuffer = SBase64ArrayBuffer.instance
